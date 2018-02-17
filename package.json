@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm run build",
     "test": "kyt test",
     "dev": "kyt dev",
     "build": "kyt build",
