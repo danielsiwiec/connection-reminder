@@ -1,10 +1,20 @@
 {
-  "name": "connection-remider",
+  "name": "connection-reminder",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "test": "kyt test",
+    "dev": "kyt dev",
+    "build": "kyt build",
+    "start": "node build/server/main.js",
+    "proto": "kyt proto",
+    "test-watch": "kyt test -- --watch",
+    "test-coverage": "kyt test -- --coverage",
+    "lint": "npm run lint-script && npm run lint-style",
+    "lint-script": "kyt lint-script",
+    "lint-style": "kyt lint-style",
+    "kyt:help": "kyt --help"
   },
   "repository": {
     "type": "git",
@@ -17,7 +27,20 @@
     "url": "https://github.com/danielsiwiec/connection-reminder/issues"
   },
   "homepage": "https://github.com/danielsiwiec/connection-reminder#readme",
+  "devDependencies": {
+    "kyt-cli": "^0.2.1",
+    "enzyme": "2.4.1",
+    "react-addons-test-utils": "15.3.0",
+    "react-hot-loader": "3.0.0-beta.6"
+  },
   "dependencies": {
-    "express": "^4.16.2"
+    "babel-polyfill": "6.26.0",
+    "babel-preset-kyt-react": "0.3.0",
+    "compression": "1.6.2",
+    "express": "4.15.3",
+    "react": "15.3.0",
+    "react-dom": "15.3.0",
+    "react-router": "2.6.1",
+    "kyt": "0.9.0"
   }
 }
