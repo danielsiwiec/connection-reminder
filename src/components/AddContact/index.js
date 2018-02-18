@@ -14,14 +14,10 @@ class AddContact extends Component {
   }
 
   handleSubmit(event) {
-    fetch('/contacts',{
-      method: 'POST',
-      body: JSON.stringify({contact: this.state.value}),
-      headers: {
-        'content-type': 'application/json'
-      },
-    })
     event.preventDefault();
+    let newContact = this.state.value
+    this.props.onclick(newContact)
+    this.setState({value: ''})
   }
 
   render() {

@@ -1,15 +1,48 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styles from './styles.scss';
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
 
-function Home() {
-  return (
-    <section>
-      <AddContact />
-      <ContactList />
-    </section>
-  );
+class Home extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      contacts: []
+    }
+
+    this.addContact = this.addContact.bind(this)
+  }
+
+  componentDidMount() {
+    fetch('/contacts')
+      .then(results => results.json())
+      .then(data => {
+        this.setState({contacts: data.contacts})
+      })
+  }
+
+  render() {
+    return (
+      <section>
+        <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
+        <ContactList contacts={this.state.contacts} />
+      </section>
+    )
+  }
+
+  addContact(newContact) {
+    this.setState({ contacts: [...this.state.contacts, newContact]})
+    fetch('/contacts',{
+      method: 'POST',
+      body: JSON.stringify({contact: newContact}),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+  }
 }
+
+
 
 export default Home;
