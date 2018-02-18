@@ -17,8 +17,11 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.fetchContacts()
     this.loginToGoogle()
+    .then(login => {
+      this.setState({login})
+    })
+    .then(this.fetchContacts)
   }
 
   render() {
@@ -31,7 +34,7 @@ class Home extends Component {
   }
 
   loginToGoogle() {
-    googleyolo.retrieve({
+    return googleyolo.retrieve({
       supportedAuthMethods: [
         "https://accounts.google.com",
         "googleyolo://id-and-password"
@@ -43,11 +46,10 @@ class Home extends Component {
         }
       ]
     })
-    .then(console.log)
   }
 
   fetchContacts() {
-    fetch('/contacts')
+    fetch(`/contacts?token=${this.state.login.idToken}`)
       .then(results => results.json())
       .then(data => {
         this.setState({contacts: data.contacts})
@@ -56,7 +58,7 @@ class Home extends Component {
 
   addContact(newContact) {
     this.setState({ contacts: [...this.state.contacts, newContact]})
-    fetch('/contacts',{
+    fetch(`/contacts?token=${this.state.login.idToken}`,{
       method: 'POST',
       body: JSON.stringify({contact: newContact}),
       headers: {

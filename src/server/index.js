@@ -10,6 +10,7 @@ import createMemoryHistory from 'react-router/lib/createMemoryHistory';
 import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
+import fetch from 'node-fetch'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10);
@@ -25,16 +26,43 @@ app.use(bodyParser.json())
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 
-const contacts = ['Ambi', 'My Love', 'Honey pie', 'Sugar Bun', 'Pumpkin']
+const contacts = {}
 
 app.get('/contacts', (request, response) => {
-  response.json({contacts})
+  validateToken(request.query.token)
+  .then(login => {
+    response.json({contacts: contacts[login.email] || []})
+  })
+  .catch(() => response.status(500).end())
 })
 
 app.post('/contacts', (request, response) => {
-  contacts.push(request.body.contact)
-  response.end()
+  validateToken(request.query.token)
+  .then(login => {
+    addContact(login.email, request.body.contact)
+    response.end()
+  })
+  .catch(() => response.status(500).end())
 })
+
+function addContact(email, contact) {
+  if (contacts[email]) {
+    contacts[email].push(contact)
+  } else {
+    contacts[email] = [contact]
+  }
+}
+
+function validateToken(token) {
+  return fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}`)
+  .then(response => {
+    if (response.status != 200) {
+      throw new Error("Token verification failed")
+    } else {
+      return response.json()
+    }
+  })
+}
 
 // Setup server side routing.
 app.get('*', (request, response) => {
