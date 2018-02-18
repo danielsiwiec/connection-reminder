@@ -7,16 +7,8 @@ import App from '../components/App';
 // chunking assets. Check out the following for more:
 // https://webpack.js.org/guides/migrating/#code-splitting-with-es2015
 
-const importContactList = (nextState, cb) => {
-  import(/* webpackChunkName: "contactList" */ '../components/ContactList')
-    .then(module => cb(null, module.default))
-    .catch(e => {
-      throw e;
-    });
-};
-
-const importTools = (nextState, cb) => {
-  import(/* webpackChunkName: "tools" */ '../components/Tools')
+const importHome = (nextState, cb) => {
+  import(/* webpackChunkName: "contactList" */ '../components/Home')
     .then(module => cb(null, module.default))
     .catch(e => {
       throw e;
@@ -27,8 +19,7 @@ const importTools = (nextState, cb) => {
 // https://github.com/reactjs/react-router/blob/master/docs/guides/DynamicRouting.md
 const routes = (
   <Route path="/" component={App}>
-    <IndexRoute getComponent={importContactList} />
-    <Route path="tools" getComponent={importTools} />
+    <IndexRoute getComponent={importHome} />
   </Route>
 );
 
@@ -36,8 +27,7 @@ const routes = (
 // routes so we need to require them here as a workaround.
 // https://github.com/gaearon/react-hot-loader/issues/288
 if (module.hot) {
-  require('../components/ContactList'); // eslint-disable-line global-require
-  require('../components/Tools'); // eslint-disable-line global-require
+  require('../components/Home'); // eslint-disable-line global-require
 }
 
 export default routes;
