@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styles from './styles.scss';
 
-class Home extends Component {
+class ContactList extends Component {
   constructor() {
     super();
     this.state = {
@@ -30,4 +30,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default ContactList;
