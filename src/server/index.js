@@ -40,7 +40,7 @@ app.post('/contacts', (request, response) => {
   validateToken(request.query.token)
   .then(login => {
     addContact(login.email, request.body.contact)
-    response.end()
+    response.status(201).end()
   })
   .catch(() => response.status(500).end())
 })
