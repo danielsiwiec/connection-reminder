@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import express from 'express';
 import compression from 'compression';
+import bodyParser from 'body-parser';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -19,12 +20,20 @@ app.disable('x-powered-by');
 
 // Compress (gzip) assets in production.
 app.use(compression());
+app.use(bodyParser.json())
 
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 
+const contacts = ['Ambi', 'My Love', 'Honey pie', 'Sugar Bun', 'Pumpkin']
+
 app.get('/contacts', (request, response) => {
-  response.json({contacts: ['Ambi', 'My Love', 'Honey pie', 'Sugar Bun', 'Pumpkin']})
+  response.json({contacts})
+})
+
+app.post('/contacts', (request, response) => {
+  contacts.push(request.body.contact)
+  response.end()
 })
 
 // Setup server side routing.
