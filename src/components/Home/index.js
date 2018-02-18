@@ -1,19 +1,33 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styles from './styles.scss';
 
-function Home() {
-  return (
-    <section>
-      <p className={styles.paragraph}>
-        Welcome to the <strong>Universal React Starter-kyt</strong>. This starter kyt should serve
-        as the base for an advanced, server-rendered React app.
-      </p>
-      <p className={styles.paragraph}>
-        Check out the Tools section for an outline of the libraries that are used in this
-        Starter-kyt.
-      </p>
-    </section>
-  );
+class Home extends Component {
+  constructor() {
+    super();
+    this.state = {
+      contacts: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('/contacts')
+    .then(results => results.json())
+    .then(data => {
+      this.setState({contacts: data.contacts})
+    })
+  }
+
+  render() {
+    return (
+      <section>
+        <ul>
+        {this.state.contacts.map(contact => {
+          return <li key={contact}>{contact}</li>
+        })}
+        </ul>
+      </section>
+    );
+  }
 }
 
 export default Home;

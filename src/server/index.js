@@ -23,6 +23,10 @@ app.use(compression());
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 
+app.get('/contacts', (request, response) => {
+  response.json({contacts: ['Ambi', 'My Love', 'Honey pie', 'Sugar Bun', 'Pumpkin']})
+})
+
 // Setup server side routing.
 app.get('*', (request, response) => {
   const history = createMemoryHistory(request.originalUrl);
