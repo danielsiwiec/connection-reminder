@@ -12,14 +12,13 @@ class Home extends Component {
     }
 
     this.addContact = this.addContact.bind(this)
+    this.fetchContacts = this.fetchContacts.bind(this)
+    this.loginToGoogle = this.loginToGoogle.bind(this)
   }
 
   componentDidMount() {
-    fetch('/contacts')
-      .then(results => results.json())
-      .then(data => {
-        this.setState({contacts: data.contacts})
-      })
+    this.fetchContacts()
+    this.loginToGoogle()
   }
 
   render() {
@@ -29,6 +28,30 @@ class Home extends Component {
         <ContactList contacts={this.state.contacts} />
       </section>
     )
+  }
+
+  loginToGoogle() {
+    googleyolo.retrieve({
+      supportedAuthMethods: [
+        "https://accounts.google.com",
+        "googleyolo://id-and-password"
+      ],
+      supportedIdTokenProviders: [
+        {
+          uri: "https://accounts.google.com",
+          clientId: "627854783760-thjum3jd8ulc08244o9211au5aqq4ar3.apps.googleusercontent.com"
+        }
+      ]
+    })
+    .then(console.log)
+  }
+
+  fetchContacts() {
+    fetch('/contacts')
+      .then(results => results.json())
+      .then(data => {
+        this.setState({contacts: data.contacts})
+      })
   }
 
   addContact(newContact) {

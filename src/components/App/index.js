@@ -4,6 +4,7 @@ import styles from './styles.scss';
 function App({ children }) {
   return (
     <div>
+      <script src="https://smartlock.google.com/client"></script>
       <div className={styles.content}>
         {children}
       </div>
