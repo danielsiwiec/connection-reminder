@@ -26,13 +26,14 @@ class Home extends Component {
     this.addContact = this.addContact.bind(this)
     this.fetchContacts = this.fetchContacts.bind(this)
     this.loginToGoogle = this.loginToGoogle.bind(this)
+    this.bumpContact = this.bumpContact.bind(this)
+    this.syncWithBackend = this.syncWithBackend.bind(this)
   }
 
   componentDidMount() {
     this.loginToGoogle()
     .then(login => login, error => {
       if (error.type === 'noCredentialsAvailable'){
-        console.log('HINT');
         return googleyolo.hint(GOOGLE_YOLO_CONF)
       }
     })
@@ -44,7 +45,7 @@ class Home extends Component {
     return (
       <section>
         <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
-        <ContactList contacts={this.state.contacts} />
+        <ContactList contacts={this.state.contacts} bump={this.bumpContact} />
       </section>
     )
   }
@@ -68,19 +69,27 @@ class Home extends Component {
   }
 
   addContact(newContact) {
+    this.setState({ contacts: [...this.state.contacts, newContact]}, this.syncWithBackend)
+  }
+
+  bumpContact(index) {
+    let removed = this.state.contacts.splice(index, 1)
+    this.setState({contacts: [...this.state.contacts, ...removed]}, this.syncWithBackend)
+  }
+
+  syncWithBackend() {
     fetch(`/contacts?token=${this.state.login.idToken}`,{
       method: 'POST',
-      body: JSON.stringify({contact: newContact}),
+      body: JSON.stringify({contacts: this.state.contacts}),
       headers: {
         'content-type': 'application/json'
       }
     })
     .then(response => {
-      if (response.status != 201) {
-        throw new Error("Add error")
+      if (response.status != 200) {
+        throw new Error("Sync error")
       }
     })
-    .then(() => this.setState({ contacts: [...this.state.contacts, newContact]}))
   }
 }
 

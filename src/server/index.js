@@ -39,18 +39,14 @@ app.get('/contacts', (request, response) => {
 app.post('/contacts', (request, response) => {
   validateToken(request.query.token)
   .then(login => {
-    addContact(login.email, request.body.contact)
-    response.status(201).end()
+    saveContacts(login.email, request.body.contacts)
+    response.end()
   })
   .catch(() => response.status(500).end())
 })
 
-function addContact(email, contact) {
-  if (contacts[email]) {
-    contacts[email].push(contact)
-  } else {
-    contacts[email] = [contact]
-  }
+function saveContacts(email, update) {
+  contacts[email] = update
 }
 
 function validateToken(token) {

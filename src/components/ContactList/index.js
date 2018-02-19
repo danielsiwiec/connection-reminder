@@ -6,12 +6,16 @@ class ContactList extends Component {
     return (
       <section>
         <ul>
-        {this.props.contacts.map(contact => {
-          return <li key={contact}>{contact}</li>
+        {this.props.contacts.map((contact, index) => {
+          return <li key={index}>{contact}<button onClick={this.handleClick(index)}>Bump</button></li>
         })}
         </ul>
       </section>
     );
+  }
+
+  handleClick(key) {
+    return () => this.props.bump(key)
   }
 }
 
