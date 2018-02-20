@@ -11,6 +11,7 @@ import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
 import fetch from 'node-fetch'
+import dao from './dao'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10);
@@ -26,12 +27,10 @@ app.use(bodyParser.json())
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 
-const contacts = {}
-
 app.get('/contacts', (request, response) => {
   validateToken(request.query.token)
   .then(login => {
-    response.json({contacts: contacts[login.email] || []})
+    response.json({contacts: dao.get(login.email)})
   })
   .catch(() => response.status(500).end())
 })
@@ -39,15 +38,11 @@ app.get('/contacts', (request, response) => {
 app.post('/contacts', (request, response) => {
   validateToken(request.query.token)
   .then(login => {
-    saveContacts(login.email, request.body.contacts)
+    dao.save(login.email, request.body.contacts)
     response.end()
   })
   .catch(() => response.status(500).end())
 })
-
-function saveContacts(email, update) {
-  contacts[email] = update
-}
 
 function validateToken(token) {
   return fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}`)
