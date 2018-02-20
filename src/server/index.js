@@ -11,6 +11,7 @@ import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
 import contactsService from './services/contactsService'
+import validateToken from './services/validateToken'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10);
@@ -26,8 +27,10 @@ app.use(bodyParser.json())
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 
+app.use('/contacts', validateToken)
+
 app.get('/contacts', (request, response) => {
-  contactsService.list(request.query.token)
+  contactsService.list(request.login)
   .then(contacts => response.json({contacts}))
   .catch((error) => {
     console.log(error)
@@ -36,7 +39,7 @@ app.get('/contacts', (request, response) => {
 })
 
 app.post('/contacts', (request, response) => {
-  contactsService.update(request.query.token, request.body.contacts)
+  contactsService.update(request.login, request.body.contacts)
   .then(() => response.end())
   .catch((error) => {
     console.log(error)
