@@ -30,18 +30,24 @@ app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 app.get('/contacts', (request, response) => {
   validateToken(request.query.token)
   .then(login => {
-    response.json({contacts: dao.get(login.email)})
+    dao.get(login.email).then(contacts => response.json({contacts}))
   })
-  .catch(() => response.status(500).end())
+  .catch((error) => {
+    console.log(error)
+    response.status(500).end()
+  })
 })
 
 app.post('/contacts', (request, response) => {
   validateToken(request.query.token)
   .then(login => {
     dao.save(login.email, request.body.contacts)
-    response.end()
+    .then(() => response.end())
   })
-  .catch(() => response.status(500).end())
+  .catch((error) => {
+    console.log(error)
+    response.status(500).end()
+  })
 })
 
 function validateToken(token) {
