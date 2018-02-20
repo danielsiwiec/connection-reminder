@@ -10,8 +10,7 @@ import createMemoryHistory from 'react-router/lib/createMemoryHistory';
 import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
-import fetch from 'node-fetch'
-import dao from './dao'
+import contactsService from './services/contactsService'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10);
@@ -28,10 +27,8 @@ app.use(bodyParser.json())
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 
 app.get('/contacts', (request, response) => {
-  validateToken(request.query.token)
-  .then(login => {
-    dao.get(login.email).then(contacts => response.json({contacts}))
-  })
+  contactsService.list(request.query.token)
+  .then(contacts => response.json({contacts}))
   .catch((error) => {
     console.log(error)
     response.status(500).end()
@@ -39,27 +36,15 @@ app.get('/contacts', (request, response) => {
 })
 
 app.post('/contacts', (request, response) => {
-  validateToken(request.query.token)
-  .then(login => {
-    dao.save(login.email, request.body.contacts)
-    .then(() => response.end())
-  })
+  contactsService.update(request.query.token, request.body.contacts)
+  .then(() => response.end())
   .catch((error) => {
     console.log(error)
     response.status(500).end()
   })
 })
 
-function validateToken(token) {
-  return fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}`)
-  .then(response => {
-    if (response.status != 200) {
-      throw new Error("Token verification failed")
-    } else {
-      return response.json()
-    }
-  })
-}
+
 
 // Setup server side routing.
 app.get('*', (request, response) => {
