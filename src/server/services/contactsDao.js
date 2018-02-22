@@ -5,9 +5,7 @@ const CONTACTS_COLLECTION = "contacts"
 let db
 
 function get(username) {
-  return db.collection(CONTACTS_COLLECTION).find({username}).limit(1).toArray()
-  .then(docs => docs[0])
-  .then(contactsEntry => contactsEntry.contacts)
+  return db.collection(CONTACTS_COLLECTION).findOne({username})
 }
 
 function save(username, update) {

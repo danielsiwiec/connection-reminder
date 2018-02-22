@@ -10,7 +10,7 @@ import createMemoryHistory from 'react-router/lib/createMemoryHistory';
 import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
-import contactsService from './services/contactsService'
+import contactsDao from './services/contactsDao'
 import validateToken from './services/validateToken'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
@@ -30,7 +30,8 @@ app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
 app.use('/contacts', validateToken)
 
 app.get('/contacts', (request, response) => {
-  contactsService.list(request.login)
+  contactsDao.get(request.login.email)
+  .then(user => user && user.contacts || [])
   .then(contacts => response.json({contacts}))
   .catch((error) => {
     console.log(error)
@@ -39,7 +40,7 @@ app.get('/contacts', (request, response) => {
 })
 
 app.post('/contacts', (request, response) => {
-  contactsService.update(request.login, request.body.contacts)
+  contactsDao.save(request.login.email, request.body.contacts)
   .then(() => response.end())
   .catch((error) => {
     console.log(error)
