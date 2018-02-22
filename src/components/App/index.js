@@ -24,7 +24,7 @@ class App extends Component {
     }
 
     this.addContact = this.addContact.bind(this)
-    this.fetchContacts = this.fetchContacts.bind(this)
+    this.fetchUserData = this.fetchUserData.bind(this)
     this.loginToGoogle = this.loginToGoogle.bind(this)
     this.bumpContact = this.bumpContact.bind(this)
     this.removeContact = this.removeContact.bind(this)
@@ -33,13 +33,9 @@ class App extends Component {
 
   componentDidMount() {
     this.loginToGoogle()
-    .then(login => login, error => {
-      if (error.type === 'noCredentialsAvailable'){
-        return googleyolo.hint(GOOGLE_YOLO_CONFIGURATION)
-      }
-    })
     .then(login => this.setState({login}))
-    .then(this.fetchContacts)
+    .then(this.fetchUserData)
+    .then(data => this.setState({contacts: data.contacts || []}))
   }
 
   render() {
@@ -58,19 +54,21 @@ class App extends Component {
 
   loginToGoogle() {
     return googleyolo.retrieve(GOOGLE_YOLO_CONFIGURATION)
+    .then(login => login, error => {
+      if (error.type === 'noCredentialsAvailable'){
+        return googleyolo.hint(GOOGLE_YOLO_CONFIGURATION)
+      }
+    })
   }
 
-  fetchContacts() {
-    fetch(`/contacts?token=${this.state.login.idToken}`)
+  fetchUserData() {
+    return fetch(`/contacts?token=${this.state.login.idToken}`)
       .then(response => {
         if (response.status == 200) {
           return response.json()
         } else {
           throw new Error("Error fetching contacts")
         }
-      })
-      .then(data => {
-        this.setState({contacts: data.contacts || []})
       })
   }
 
