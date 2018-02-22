@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from './';
+import Tools from './';
 
 it('Test example', () => {
-  const wrapper = shallow(<App>test</App>);
-  expect(wrapper.is('div')).toBeTruthy();
+  const wrapper = shallow(<Tools />);
+  expect(wrapper.is('ul')).toBeTruthy();
 });
