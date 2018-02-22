@@ -21,7 +21,7 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI)
   console.log('Database connection ready')
 })
 .catch(error => {
-  console.log(err)
+  console.log(error)
   process.exit(1)
 })
 

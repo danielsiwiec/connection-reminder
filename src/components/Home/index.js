@@ -27,6 +27,7 @@ class Home extends Component {
     this.fetchContacts = this.fetchContacts.bind(this)
     this.loginToGoogle = this.loginToGoogle.bind(this)
     this.bumpContact = this.bumpContact.bind(this)
+    this.removeContact = this.removeContact.bind(this)
     this.syncWithBackend = this.syncWithBackend.bind(this)
   }
 
@@ -45,7 +46,7 @@ class Home extends Component {
     return (
       <section>
         <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
-        <ContactList contacts={this.state.contacts} bump={this.bumpContact} />
+        <ContactList contacts={this.state.contacts} bump={this.bumpContact} remove={this.removeContact} />
       </section>
     )
   }
@@ -75,6 +76,11 @@ class Home extends Component {
   bumpContact(index) {
     let removed = this.state.contacts.splice(index, 1)
     this.setState({contacts: [...this.state.contacts, ...removed]}, this.syncWithBackend)
+  }
+
+  removeContact(index) {
+    let removed = this.state.contacts.splice(index, 1)
+    this.setState({contacts: this.state.contacts}, this.syncWithBackend)
   }
 
   syncWithBackend() {
