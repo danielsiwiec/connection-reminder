@@ -15,9 +15,17 @@ class AddContact extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let newContact = this.state.value
+    let newContact = this.parseContact(this.state.value)
     this.props.onclick(newContact)
     this.setState({value: ''})
+  }
+
+  parseContact(contactString) {
+    let hashRegExp = /#\w*/g
+    let stripHashSign = string => string.replace('#', '')
+    let tags = (contactString.match(hashRegExp) || []).map(stripHashSign)
+    let contactName = contactString.replace(hashRegExp, '').trim()
+    return { name: contactName, tags }
   }
 
   render() {

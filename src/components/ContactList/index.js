@@ -7,7 +7,7 @@ class ContactList extends Component {
       <section>
         <ul>
         {this.props.contacts.map((contact, index) => {
-          return <li key={index}>{contact}
+          return <li key={index}>{contact.name}
             <button onClick={this.bump(index)}>Bump</button>
             <button onClick={this.remove(index)}>Remove</button>
           </li>

@@ -70,7 +70,7 @@ class App extends Component {
         }
       })
       .then(data => {
-        this.setState({contacts: data.contacts})
+        this.setState({contacts: data.contacts || []})
       })
   }
 
