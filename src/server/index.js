@@ -11,7 +11,7 @@ import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
 import contactsDao from './dao'
-import validateToken from './services/validateToken'
+import validateToken from './validateToken'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10);
