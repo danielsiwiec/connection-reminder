@@ -10,7 +10,7 @@ import createMemoryHistory from 'react-router/lib/createMemoryHistory';
 import match from 'react-router/lib/match';
 import template from './template';
 import routes from '../routes';
-import contactsDao from './services/contactsDao'
+import contactsDao from './dao'
 import validateToken from './services/validateToken'
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
