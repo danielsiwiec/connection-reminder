@@ -38,11 +38,17 @@ class App extends Component {
         <Grid item xs={12}>
           <Grid container justify='center'>
             <script src="https://smartlock.google.com/client"></script>
+            <Grid item xs={12}>
+            <Grid container justify='center'>
             <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
+            </Grid>
+            </Grid>
+            <Grid item xs={12}>
             <ContactList contacts={this.state.contacts}
               check={this.checkContact} 
               remove={this.removeContact}
               bump={this.bumpContact} />
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
