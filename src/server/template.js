@@ -20,7 +20,7 @@ export default vo => `
       ? '<link rel="stylesheet" type="text/css" href="' + vo.mainCSSBundle + '">'
       : ''}
 
-    <title>Universal React Starter Kyt</title>
+    <title>Connection Reminder</title>
   </head>
 
   <body>
