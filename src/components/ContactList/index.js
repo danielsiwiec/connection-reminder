@@ -7,7 +7,7 @@ class ContactList extends Component {
       <section>
         <ul>
         {this.props.contacts.map((contact, index) => {
-          return <li key={index}>{contact.name}
+          return <li key={index}>{contact.name} {this.renderTags(contact.tags)}
             <button onClick={() => this.props.check(index)}>Check</button>
             <button onClick={() => this.props.bump(index)}>Bump</button>
             <button onClick={() => this.props.remove(index)}>Remove</button>
@@ -16,6 +16,12 @@ class ContactList extends Component {
         </ul>
       </section>
     );
+  }
+
+  renderTags(tags) {
+    if (tags && tags.length > 0) {
+      return `[${tags.join(', ')}]`
+    }
   }
 }
 
