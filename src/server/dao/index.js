@@ -24,7 +24,7 @@ class MongoDB {
     console.log(`MongoDB URL found at ${process.env.MONGODB_URI}`)
     mongodb.MongoClient.connect(process.env.MONGODB_URI)
     .then(connection => {
-      this.db = connection.db(DATABASE)
+      this.db = connection.db(this.DATABASE)
       console.log('Database connection ready')
     })
     .catch(error => {
