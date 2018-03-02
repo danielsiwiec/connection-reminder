@@ -27,7 +27,7 @@ class App extends Component {
     this.fetchUserData = this.fetchUserData.bind(this)
     this.loadFeatures = this.loadFeatures.bind(this)
     this.loginToGoogle = this.loginToGoogle.bind(this)
-    this.bumpContact = this.bumpContact.bind(this)
+    this.checkContact = this.checkContact.bind(this)
     this.removeContact = this.removeContact.bind(this)
     this.syncWithBackend = this.syncWithBackend.bind(this)
   }
@@ -48,7 +48,7 @@ class App extends Component {
         <div className={styles.content}>
           <section>
             <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
-            <ContactList contacts={this.state.contacts} bump={this.bumpContact} remove={this.removeContact} />
+            <ContactList contacts={this.state.contacts} check={this.checkContact} remove={this.removeContact} />
           </section>
         </div>
       </div>
@@ -94,7 +94,7 @@ class App extends Component {
     this.setState({ contacts: [...this.state.contacts, newContact]}, this.syncWithBackend)
   }
 
-  bumpContact(index) {
+  checkContact(index) {
     let removed = this.state.contacts.splice(index, 1)
     this.setState({contacts: [...this.state.contacts, ...removed]}, this.syncWithBackend)
   }
