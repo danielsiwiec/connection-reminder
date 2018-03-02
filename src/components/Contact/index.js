@@ -30,7 +30,7 @@ class Contact extends Component {
 
   renderTags(tags) {
     if (tags && tags.length > 0) {
-      return tags.map(tag => <Chip label={`#${tag}`} />)
+      return tags.map((tag, index) => <Chip key={index} label={`#${tag}`} />)
     }
   }
 }
