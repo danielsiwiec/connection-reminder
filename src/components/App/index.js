@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import styles from './styles.scss';
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
+import backendClient from '../../services/backendClient'
 
 const GOOGLE_YOLO_CONFIGURATION = {
   supportedAuthMethods: [
@@ -24,8 +25,6 @@ class App extends Component {
     }
 
     this.addContact = this.addContact.bind(this)
-    this.fetchUserData = this.fetchUserData.bind(this)
-    this.loadFeatures = this.loadFeatures.bind(this)
     this.loginToGoogle = this.loginToGoogle.bind(this)
     this.checkContact = this.checkContact.bind(this)
     this.bumpContact = this.bumpContact.bind(this)
@@ -34,11 +33,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.loadFeatures()
+    backendClient.loadFeatures()
     .then(features => this.setState({features}))
     .then(this.loginToGoogle)
     .then(login => this.setState({login}))
-    .then(this.fetchUserData)
+    .then(() => backendClient.fetchUserData(this.state.login.idToken))
     .then(data => this.setState({contacts: data.contacts || []}))
   }
 
@@ -59,17 +58,6 @@ class App extends Component {
     )
   }
 
-  loadFeatures() {
-    return fetch('/features')
-      .then(response => {
-        if (response.status == 200) {
-          return response.json()
-        } else {
-          throw new Error("Error fetching contacts")
-        }
-      }) 
-  }
-
   loginToGoogle() {
     if (this.state.features.isMock) {
       return Promise.resolve({email: 'mock'})
@@ -81,17 +69,6 @@ class App extends Component {
         }
       })
     }
-  }
-
-  fetchUserData() {
-    return fetch(`/contacts?token=${this.state.login.idToken}`)
-      .then(response => {
-        if (response.status == 200) {
-          return response.json()
-        } else {
-          throw new Error("Error fetching contacts")
-        }
-      })
   }
 
   addContact(newContact) {
@@ -116,21 +93,8 @@ class App extends Component {
   }
 
   syncWithBackend() {
-    fetch(`/contacts?token=${this.state.login.idToken}`,{
-      method: 'POST',
-      body: JSON.stringify({contacts: this.state.contacts}),
-      headers: {
-        'content-type': 'application/json'
-      }
-    })
-    .then(response => {
-      if (response.status != 200) {
-        throw new Error("Sync error")
-      }
-    })
+    return backendClient.syncWithBackend(this.state.login.idToken, this.state.contacts)
   }
 }
-
-
 
 export default App;
