@@ -19,7 +19,7 @@ class Contact extends Component {
         <ListItem>{this.renderTags()}</ListItem>}
         <ListItemIcon>
           <IconButton onClick={() => this.props.check(this.props.index)}>
-            <Tooltip title='Push to bottom'>
+            <Tooltip title='Mark as done'>
               <DoneIcon color='primary' />
             </Tooltip>
           </IconButton>
