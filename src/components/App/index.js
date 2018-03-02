@@ -5,7 +5,6 @@ import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
 import googleLogin from '../../services/googleLogin'
 import contactsHelper from '../../services/contactsHelper'
-import 'typeface-roboto'
 
 class App extends Component {
 
