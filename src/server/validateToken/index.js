@@ -1,5 +1,12 @@
 import fetch from 'node-fetch'
 
+function mockToken(req, res, next) {
+  req.login = {
+    email: 'mock'
+  }
+  next()
+}
+
 function validateToken(req, res, next) {
   let token = req.query.token
   return fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}`)
@@ -16,4 +23,4 @@ function validateToken(req, res, next) {
   })
 }
 
-export default validateToken
+export default process.env.mock === 'true' ? mockToken : validateToken

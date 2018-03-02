@@ -25,6 +25,7 @@ class App extends Component {
 
     this.addContact = this.addContact.bind(this)
     this.fetchUserData = this.fetchUserData.bind(this)
+    this.loadFeatures = this.loadFeatures.bind(this)
     this.loginToGoogle = this.loginToGoogle.bind(this)
     this.bumpContact = this.bumpContact.bind(this)
     this.removeContact = this.removeContact.bind(this)
@@ -32,7 +33,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.loginToGoogle()
+    this.loadFeatures()
+    .then(features => this.setState({features}))
+    .then(this.loginToGoogle)
     .then(login => this.setState({login}))
     .then(this.fetchUserData)
     .then(data => this.setState({contacts: data.contacts || []}))
@@ -52,13 +55,28 @@ class App extends Component {
     )
   }
 
+  loadFeatures() {
+    return fetch('/features')
+      .then(response => {
+        if (response.status == 200) {
+          return response.json()
+        } else {
+          throw new Error("Error fetching contacts")
+        }
+      }) 
+  }
+
   loginToGoogle() {
-    return googleyolo.retrieve(GOOGLE_YOLO_CONFIGURATION)
-    .then(login => login, error => {
-      if (error.type === 'noCredentialsAvailable'){
-        return googleyolo.hint(GOOGLE_YOLO_CONFIGURATION)
-      }
-    })
+    if (this.state.features.isMock) {
+      return Promise.resolve({email: 'mock'})
+    } else {
+      return googleyolo.retrieve(GOOGLE_YOLO_CONFIGURATION)
+      .then(login => login, error => {
+        if (error.type === 'noCredentialsAvailable'){
+          return googleyolo.hint(GOOGLE_YOLO_CONFIGURATION)
+        }
+      })
+    }
   }
 
   fetchUserData() {

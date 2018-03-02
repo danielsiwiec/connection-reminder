@@ -3,6 +3,7 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import contactsDao from '../dao'
 import validateToken from '../validateToken'
+import features from '../features'
 
 const app = express();
 
@@ -10,6 +11,10 @@ app.use(bodyParser.json())
 
 // Setup the public directory so that we can server static assets.
 app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
+
+app.get('/features', (request, response) => {
+  response.json(features)
+})
 
 app.use('/contacts', validateToken)
 

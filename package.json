@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "npm run build",
     "test": "kyt test",
-    "dev": "kyt dev",
+    "dev": "mock=true kyt dev",
     "build": "kyt build",
     "start": "node build/server/main.js",
     "proto": "kyt proto",
