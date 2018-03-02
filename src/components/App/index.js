@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Reboot from 'material-ui/Reboot';
 import Grid from 'material-ui/Grid'
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
@@ -34,7 +33,6 @@ class App extends Component {
   render() {
     return (
       <Grid>
-        <Reboot />
         <Grid item xs={12}>
           <Grid container justify='center'>
             <script src="https://smartlock.google.com/client"></script>
