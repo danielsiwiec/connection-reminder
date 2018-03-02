@@ -7,54 +7,61 @@ import DeleteIcon from 'material-ui-icons/Delete'
 import WatchLaterIcon from 'material-ui-icons/WatchLater'
 import Tooltip from 'material-ui/Tooltip'
 import {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
+import { withStyles } from 'material-ui/styles'
+import Button from 'material-ui/Button'
 
-class Contact extends Component {
-  render() {
-    return (
-      <ListItem>
-        <ListItemText primary={this.renderContactText()} />
-        {this.props.contact.lastChecked &&
-        <ListItemText primary={this.renderLastCheckedText()} />}
-        {this.props.contact.tags &&
-        <ListItem>{this.renderTags()}</ListItem>}
-        <ListItemIcon>
-          <IconButton onClick={() => this.props.check(this.props.index)}>
-            <Tooltip title='Mark as done'>
-              <DoneIcon color='primary' />
-            </Tooltip>
-          </IconButton>
-        </ListItemIcon>
-        <ListItemIcon>
-          <IconButton onClick={() => this.props.bump(this.props.index)}>
-            <Tooltip title='Move down'>
-              <WatchLaterIcon />
-            </Tooltip>
-          </IconButton>
-        </ListItemIcon>
-        <ListItemIcon>
-          <IconButton onClick={() => this.props.remove(this.props.index)}>
-            <Tooltip title='Delete'>
-              <DeleteIcon color='secondary'/>
-            </Tooltip>
-          </IconButton>
-        </ListItemIcon>
-      </ListItem>
-    )
+const styles = {
+  lastConnected: {
+    fontSize: '0.6rem',
+    color: 'gray'
   }
+};
 
-  renderContactText() {
-    let contact = this.props.contact
-    return contact.name
-  }
+function Contact(props) {
+  const { classes } = props;
+  return (
+    <ListItem>
+      <ListItemText primary={renderContactText(props.contact)} />
+      {props.contact.lastChecked &&
+      <ListItemText classes={{primary: classes.lastConnected}} primary={renderLastCheckedText(props.contact.lastChecked)} />}
+      <ListItem>{renderTags(props.contact.tags)}</ListItem>
+      <ListItemIcon>
+        <IconButton onClick={() => props.check(props.index)}>
+          <Tooltip title='Mark as done'>
+            <DoneIcon color='primary' />
+          </Tooltip>
+        </IconButton>
+      </ListItemIcon>
+      <ListItemIcon>
+        <IconButton onClick={() => props.bump(props.index)}>
+          <Tooltip title='Move down'>
+            <WatchLaterIcon />
+          </Tooltip>
+        </IconButton>
+      </ListItemIcon>
+      <ListItemIcon>
+        <IconButton onClick={() => props.remove(props.index)}>
+          <Tooltip title='Delete'>
+            <DeleteIcon color='secondary'/>
+          </Tooltip>
+        </IconButton>
+      </ListItemIcon>
+    </ListItem>
+  )
+}
 
-  renderLastCheckedText() {
-    return `Last checked: ${moment(this.props.contact.lastChecked).fromNow()}`
-  }
+function renderContactText(contact) {
+  return contact.name
+}
 
-  renderTags() {
-    let tags = this.props.contact.tags
+function renderLastCheckedText(lastChecked) {
+  return `Connected ${moment(lastChecked).fromNow()}`
+}
+
+function renderTags(tags) {
+  if(tags && tags.length > 0) {
     return tags.map((tag, index) => <Chip key={index} label={`#${tag}`} />)
   }
 }
 
-export default Contact
+export default withStyles(styles)(Contact)
