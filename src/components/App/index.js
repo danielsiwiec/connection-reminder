@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Reboot from 'material-ui/Reboot';
+import Grid from 'material-ui/Grid'
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
@@ -32,19 +33,19 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <script src="https://smartlock.google.com/client"></script>
+      <Grid>
         <Reboot />
-        <div>
-          <section>
+        <Grid item xs={12}>
+          <Grid container justify='center'>
+            <script src="https://smartlock.google.com/client"></script>
             <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
             <ContactList contacts={this.state.contacts}
               check={this.checkContact} 
               remove={this.removeContact}
               bump={this.bumpContact} />
-          </section>
-        </div>
-      </div>
+          </Grid>
+        </Grid>
+      </Grid>
     )
   }
 
