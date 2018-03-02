@@ -5,6 +5,7 @@ import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
 import googleLogin from '../../services/googleLogin'
 import contactsHelper from '../../services/contactsHelper'
+import styles from './styles.scss'
 
 class App extends Component {
 
@@ -36,7 +37,7 @@ class App extends Component {
         <Grid item xs={12}>
           <Grid container justify='center'>
             <script src="https://smartlock.google.com/client"></script>
-            <Grid item xs={12}>
+            <Grid className={styles.container} item xs={12}>
             <Grid container justify='center'>
             <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
             </Grid>
