@@ -3,18 +3,7 @@ import styles from './styles.scss';
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
-
-const GOOGLE_YOLO_CONFIGURATION = {
-  supportedAuthMethods: [
-    'https://accounts.google.com'
-  ],
-  supportedIdTokenProviders: [
-    {
-      uri: 'https://accounts.google.com',
-      clientId: '627854783760-thjum3jd8ulc08244o9211au5aqq4ar3.apps.googleusercontent.com'
-    }
-  ]
-}
+import googleLogin from '../../services/googleLogin'
 
 class App extends Component {
 
@@ -25,7 +14,6 @@ class App extends Component {
     }
 
     this.addContact = this.addContact.bind(this)
-    this.loginToGoogle = this.loginToGoogle.bind(this)
     this.checkContact = this.checkContact.bind(this)
     this.bumpContact = this.bumpContact.bind(this)
     this.removeContact = this.removeContact.bind(this)
@@ -35,7 +23,7 @@ class App extends Component {
   componentDidMount() {
     backendClient.loadFeatures()
     .then(features => this.setState({features}))
-    .then(this.loginToGoogle)
+    .then(() => googleLogin(this.state.features.isMock))
     .then(login => this.setState({login}))
     .then(() => backendClient.fetchUserData(this.state.login.idToken))
     .then(data => this.setState({contacts: data.contacts || []}))
@@ -56,19 +44,6 @@ class App extends Component {
         </div>
       </div>
     )
-  }
-
-  loginToGoogle() {
-    if (this.state.features.isMock) {
-      return Promise.resolve({email: 'mock'})
-    } else {
-      return googleyolo.retrieve(GOOGLE_YOLO_CONFIGURATION)
-      .then(login => login, error => {
-        if (error.type === 'noCredentialsAvailable'){
-          return googleyolo.hint(GOOGLE_YOLO_CONFIGURATION)
-        }
-      })
-    }
   }
 
   addContact(newContact) {
