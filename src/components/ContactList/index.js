@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
-import styles from './styles.scss';
+import React, {Component} from 'react'
+import Contact from '../Contact'
+import styles from './styles.scss'
 
 class ContactList extends Component {
   render() {
@@ -7,21 +8,15 @@ class ContactList extends Component {
       <section>
         <ul>
         {this.props.contacts.map((contact, index) => {
-          return <li key={index}>{contact.name} {this.renderTags(contact.tags)}
-            <button onClick={() => this.props.check(index)}>Check</button>
-            <button onClick={() => this.props.bump(index)}>Bump</button>
-            <button onClick={() => this.props.remove(index)}>Remove</button>
-          </li>
+          return (
+          <li key={index}>
+            <Contact contact={contact} check={this.props.check}
+            bump={this.props.bump} remove={this.props.remove} index={index} />
+          </li>)
         })}
         </ul>
       </section>
     );
-  }
-
-  renderTags(tags) {
-    if (tags && tags.length > 0) {
-      return `[${tags.join(', ')}]`
-    }
   }
 }
 
