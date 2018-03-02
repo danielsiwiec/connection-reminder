@@ -4,6 +4,7 @@ let addContact = (contacts, newContact) => {
 
 let checkContact = (contacts, index) => {
   let removed = contacts.splice(index, 1)
+  removed.lastChecked = new Date().getTime()
   return [...contacts, ...removed]
 }
 
