@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import Input from 'material-ui/Input'
-import Button from 'material-ui/Button'
+import IconButton from 'material-ui/IconButton'
 import PersonAdd from 'material-ui-icons/PersonAdd'
+import Tooltip from 'material-ui/Tooltip'
 
 class AddContact extends Component {
   constructor(props) {
@@ -35,7 +36,11 @@ class AddContact extends Component {
     return (
       <form onSubmit={this.submit}>
         <Input autoFocus={true} value={this.state.value} placeholder='Name' onChange={this.handleChange} />
-        <Button type='submit' color='primary' ><PersonAdd /></Button>
+        <Tooltip title='Add contact'>
+          <IconButton type='submit' color='primary' >
+            <PersonAdd />
+          </IconButton>
+        </Tooltip>
       </form>
     )
   }

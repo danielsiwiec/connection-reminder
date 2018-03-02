@@ -5,6 +5,7 @@ import Chip from 'material-ui/Chip'
 import DoneIcon from 'material-ui-icons/Done'
 import DeleteIcon from 'material-ui-icons/Delete'
 import WatchLaterIcon from 'material-ui-icons/WatchLater'
+import Tooltip from 'material-ui/Tooltip'
 import {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
 
 class Contact extends Component {
@@ -17,13 +18,25 @@ class Contact extends Component {
         {this.props.contact.tags &&
         <ListItem>{this.renderTags()}</ListItem>}
         <ListItemIcon>
-          <IconButton onClick={() => this.props.check(this.props.index)}><DoneIcon color='primary' /></IconButton>
+          <IconButton onClick={() => this.props.check(this.props.index)}>
+            <Tooltip title='Push to bottom'>
+              <DoneIcon color='primary' />
+            </Tooltip>
+          </IconButton>
         </ListItemIcon>
         <ListItemIcon>
-          <IconButton onClick={() => this.props.bump(this.props.index)}><WatchLaterIcon /></IconButton>
+          <IconButton onClick={() => this.props.bump(this.props.index)}>
+            <Tooltip title='Move down'>
+              <WatchLaterIcon />
+            </Tooltip>
+          </IconButton>
         </ListItemIcon>
         <ListItemIcon>
-          <IconButton onClick={() => this.props.remove(this.props.index)}><DeleteIcon color='secondary'/></IconButton>
+          <IconButton onClick={() => this.props.remove(this.props.index)}>
+            <Tooltip title='Delete'>
+              <DeleteIcon color='secondary'/>
+            </Tooltip>
+          </IconButton>
         </ListItemIcon>
       </ListItem>
     )
