@@ -4,6 +4,7 @@ import ContactList from '../ContactList'
 import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
 import googleLogin from '../../services/googleLogin'
+import contactsHelper from '../../services/contactsHelper'
 
 class App extends Component {
 
@@ -47,24 +48,19 @@ class App extends Component {
   }
 
   addContact(newContact) {
-    this.setState({ contacts: [...this.state.contacts, newContact]}, this.syncWithBackend)
+    this.setState({ contacts: contactsHelper.addContact(this.state.contacts, newContact)}, this.syncWithBackend)
   }
 
   checkContact(index) {
-    let removed = this.state.contacts.splice(index, 1)
-    this.setState({contacts: [...this.state.contacts, ...removed]}, this.syncWithBackend)
+    this.setState({contacts: contactsHelper.checkContact(this.state.contacts, index)}, this.syncWithBackend)
   }
 
   bumpContact(index) {
-    let bumpBy = 2
-    let removed = this.state.contacts.splice(index, 1)
-    let lastPart = this.state.contacts.splice(bumpBy + index)
-    this.setState({contacts: [...this.state.contacts, ...removed, ...lastPart]}, this.syncWithBackend)
+    this.setState({contacts: contactsHelper.bumpContact(this.state.contacts, index)}, this.syncWithBackend)
   }
 
   removeContact(index) {
-    let removed = this.state.contacts.splice(index, 1)
-    this.setState({contacts: this.state.contacts}, this.syncWithBackend)
+    this.setState({contacts: contactsHelper.removeContact(this.state.contacts, index)}, this.syncWithBackend)
   }
 
   syncWithBackend() {
