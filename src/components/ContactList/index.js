@@ -1,21 +1,21 @@
 import React, {Component} from 'react'
 import Contact from '../Contact'
-import styles from './styles.scss'
+import Table from 'material-ui/Table/Table'
+import TableBody from 'material-ui/Table/TableBody'
 
 class ContactList extends Component {
   render() {
     return (
-      <section>
-        <ul>
-        {this.props.contacts.map((contact, index) => {
-          return (
-          <li key={index}>
-            <Contact contact={contact} check={this.props.check}
-            bump={this.props.bump} remove={this.props.remove} index={index} />
-          </li>)
-        })}
-        </ul>
-      </section>
+      <Table>
+        <TableBody>
+          {this.props.contacts.map((contact, index) => {
+            return (
+              <Contact key={index} contact={contact} check={this.props.check}
+              bump={this.props.bump} remove={this.props.remove} index={index} />
+            )
+          })}
+        </TableBody>
+      </Table>
     );
   }
 }

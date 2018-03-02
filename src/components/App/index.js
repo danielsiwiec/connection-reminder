@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './styles.scss';
+import Reboot from 'material-ui/Reboot';
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
@@ -34,7 +34,8 @@ class App extends Component {
     return (
       <div>
         <script src="https://smartlock.google.com/client"></script>
-        <div className={styles.content}>
+        <Reboot />
+        <div>
           <section>
             <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
             <ContactList contacts={this.state.contacts}
