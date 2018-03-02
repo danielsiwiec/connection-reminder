@@ -1,18 +1,20 @@
+import moment from 'moment'
+
 let addContact = (contacts, newContact) => {
   return [...contacts, newContact]
 }
 
 let checkContact = (contacts, index) => {
-  let removed = contacts.splice(index, 1)
-  removed.lastChecked = new Date().getTime()
-  return [...contacts, ...removed]
+  let checked = contacts.splice(index, 1)[0]
+  checked.lastChecked = moment().valueOf()
+  return [...contacts, checked]
 }
 
 let bumpContact = (contacts, index) => {
   let bumpBy = 2
-  let removed = contacts.splice(index, 1)
+  let bumped = contacts.splice(index, 1)[0]
   let lastPart = contacts.splice(bumpBy + index)
-  return [...contacts, ...removed, ...lastPart]
+  return [...contacts, bumped, ...lastPart]
 }
 
 let removeContact = (contacts, index) => {
