@@ -8,8 +8,9 @@ class ContactList extends Component {
         <ul>
         {this.props.contacts.map((contact, index) => {
           return <li key={index}>{contact.name}
-            <button onClick={this.props.check}>Check</button>
-            <button onClick={this.props.remove}>Remove</button>
+            <button onClick={() => this.props.check(index)}>Check</button>
+            <button onClick={() => this.props.bump(index)}>Bump</button>
+            <button onClick={() => this.props.remove(index)}>Remove</button>
           </li>
         })}
         </ul>
