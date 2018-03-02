@@ -33,24 +33,22 @@ class App extends Component {
 
   render() {
     return (
-      <Grid>
-        <Grid item xs={12}>
-          <Grid container justify='center'>
-            <script src="https://smartlock.google.com/client"></script>
-            <Grid className={styles.container} item xs={12}>
-            <Grid container justify='center'>
-            <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
-            </Grid>
+      <div className={styles.container}>
+        <Grid container justify='center'>
+          <script src="https://smartlock.google.com/client"></script>
+            <Grid item xs={12}>
+              <Grid container justify='center'>
+                <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
-            <ContactList contacts={this.state.contacts}
-              check={this.checkContact} 
-              remove={this.removeContact}
-              bump={this.bumpContact} />
+              <ContactList contacts={this.state.contacts}
+                check={this.checkContact} 
+                remove={this.removeContact}
+                bump={this.bumpContact} />
             </Grid>
-          </Grid>
         </Grid>
-      </Grid>
+      </div>
     )
   }
 
