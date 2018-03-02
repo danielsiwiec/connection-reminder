@@ -14,6 +14,8 @@ class Contact extends Component {
         <ListItemText primary={this.renderContactText()} />
         {this.props.contact.lastChecked &&
         <ListItemText primary={this.renderLastCheckedText()} />}
+        {this.props.contact.tags &&
+        <ListItem>{this.renderTags()}</ListItem>}
         <ListItemIcon>
           <IconButton color='primary' onClick={() => this.props.check(this.props.index)}><Done /></IconButton>
         </ListItemIcon>
@@ -38,9 +40,7 @@ class Contact extends Component {
 
   renderTags() {
     let tags = this.props.contact.tags
-    if (tags && tags.length > 0) {
-      return tags.map((tag, index) => <Chip key={index} label={`#${tag}`} />)
-    }
+    return tags.map((tag, index) => <Chip key={index} label={`#${tag}`} />)
   }
 }
 
