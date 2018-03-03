@@ -1,29 +1,22 @@
-import React, {Component} from 'react'
-import moment from 'moment'
+import React from 'react'
+
 import IconButton from 'material-ui/IconButton'
 import Chip from 'material-ui/Chip'
-import DoneIcon from 'material-ui-icons/Done'
-import DeleteIcon from 'material-ui-icons/Delete'
-import WatchLaterIcon from 'material-ui-icons/WatchLater'
 import Tooltip from 'material-ui/Tooltip'
 import {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
-import { withStyles } from 'material-ui/styles'
 import Button from 'material-ui/Button'
 
-const styles = {
-  lastConnected: {
-    fontSize: '0.6rem',
-    color: 'gray'
-  }
-};
+import DoneIcon from 'material-ui-icons/Done'
+import WatchLaterIcon from 'material-ui-icons/WatchLater'
+import DeleteIcon from 'material-ui-icons/Delete'
+
+import LastConnected from '../LastConnected'
 
 function Contact(props) {
-  const { classes } = props;
   return (
     <ListItem>
       <ListItemText primary={renderContactText(props.contact)} />
-      {props.contact.lastChecked &&
-      <ListItemText classes={{primary: classes.lastConnected}} primary={renderLastCheckedText(props.contact.lastChecked)} />}
+      {props.contact.lastChecked &&  <LastConnected date={props.contact.lastChecked}/> }
       <ListItem>{renderTags(props.contact.tags)}</ListItem>
       <ListItemIcon>
         <IconButton onClick={() => props.check(props.index)}>
@@ -54,14 +47,10 @@ function renderContactText(contact) {
   return contact.name
 }
 
-function renderLastCheckedText(lastChecked) {
-  return `Connected ${moment(lastChecked).fromNow()}`
-}
-
 function renderTags(tags) {
   if(tags && tags.length > 0) {
     return tags.map((tag, index) => <Chip key={index} label={`#${tag}`} />)
   }
 }
 
-export default withStyles(styles)(Contact)
+export default Contact
