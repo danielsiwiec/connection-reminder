@@ -1,34 +1,45 @@
-import 'babel-polyfill';
-import compression from 'compression';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import RouterContext from 'react-router/lib/RouterContext';
-import createMemoryHistory from 'react-router/lib/createMemoryHistory';
-import match from 'react-router/lib/match';
+import 'babel-polyfill'
+import express from 'express'
+import path from 'path'
+import bodyParser from 'body-parser'
+import compression from 'compression'
+import React from 'react'
+import { renderToString } from 'react-dom/server'
+import RouterContext from 'react-router/lib/RouterContext'
+import createMemoryHistory from 'react-router/lib/createMemoryHistory'
+import match from 'react-router/lib/match'
 
-import template from './template';
-import routes from '../routes';
+import template from './template'
+import routes from '../routes'
 
-import app from './app'
+import validateToken from './validateToken'
+import serverApp from './app'
 
-const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10);
-const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
+const app = express()
 
-// Remove annoying Express header addition.
-app.disable('x-powered-by');
+app.disable('x-powered-by')
 
-// Compress (gzip) assets in production.
-app.use(compression());
+app.use(compression())
+app.use(bodyParser.json())
+app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)))
 
-// Setup server side routing.
+app.use('/contacts', validateToken)
+
+app.get('/features', serverApp.getFeatures)
+app.get('/contacts', serverApp.getContacts)
+app.post('/contacts', serverApp.postContact)
+
+
+const clientAssets = require(KYT.ASSETS_MANIFEST) // eslint-disable-line import/no-dynamic-require
+
 app.get('*', (request, response) => {
-  const history = createMemoryHistory(request.originalUrl);
+  const history = createMemoryHistory(request.originalUrl)
 
   match({ routes, history }, (error, redirectLocation, renderProps) => {
     if (error) {
-      response.status(500).send(error.message);
+      response.status(500).send(error.message)
     } else if (redirectLocation) {
-      response.redirect(302, `${redirectLocation.pathname}${redirectLocation.search}`);
+      response.redirect(302, `${redirectLocation.pathname}${redirectLocation.search}`)
     } else if (renderProps) {
       // When a React Router route is matched then we render
       // the components and assets into the template.
@@ -40,13 +51,15 @@ app.get('*', (request, response) => {
           vendorJSBundle: clientAssets['vendor.js'],
           mainCSSBundle: clientAssets['main.css'],
         })
-      );
+      )
     } else {
-      response.status(404).send('Not found');
+      response.status(404).send('Not found')
     }
-  });
-});
+  })
+})
+
+const port = process.env.PORT || parseInt(KYT.SERVER_PORT, 10)
 
 app.listen(port, () => {
-  console.log(`✅  server started on port: ${port}`); // eslint-disable-line no-console
-});
+  console.log(`✅  server started on port: ${port}`) // eslint-disable-line no-console
+})

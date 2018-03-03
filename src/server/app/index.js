@@ -1,24 +1,11 @@
-import express from 'express';
-import path from 'path';
-import bodyParser from 'body-parser';
 import contactsDao from '../dao'
-import validateToken from '../validateToken'
 import features from '../features'
 
-const app = express();
-
-app.use(bodyParser.json())
-
-// Setup the public directory so that we can server static assets.
-app.use(express.static(path.join(process.cwd(), KYT.PUBLIC_DIR)));
-
-app.get('/features', (request, response) => {
+let getFeatures = (request, response) => {
   response.json(features)
-})
+}
 
-app.use('/contacts', validateToken)
-
-app.get('/contacts', (request, response) => {
+let getContacts = (request, response) => {
   contactsDao.get(request.login.email)
   .then(user => user && user.contacts || [])
   .then(contacts => response.json({contacts}))
@@ -26,15 +13,15 @@ app.get('/contacts', (request, response) => {
     console.log(error)
     response.status(500).end()
   })
-})
+}
 
-app.post('/contacts', (request, response) => {
+let postContact = (request, response) => {
   contactsDao.save(request.login.email, request.body.contacts)
   .then(() => response.end())
   .catch((error) => {
     console.log(error)
     response.status(500).end()
   })
-})
+}
 
-export default app
+export default {getFeatures, getContacts, postContact}
