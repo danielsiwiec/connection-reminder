@@ -15,7 +15,7 @@ import LastConnected from '../LastConnected'
 function Contact(props) {
   return (
     <ListItem>
-      <ListItemText primary={renderContactText(props.contact)} />
+      <ListItemText primary={props.contact.name} />
       {props.contact.lastChecked &&  <LastConnected date={props.contact.lastChecked}/> }
       <ListItem>{renderTags(props.contact.tags)}</ListItem>
       <ListItemIcon>
@@ -41,10 +41,6 @@ function Contact(props) {
       </ListItemIcon>
     </ListItem>
   )
-}
-
-function renderContactText(contact) {
-  return contact.name
 }
 
 function renderTags(tags) {
