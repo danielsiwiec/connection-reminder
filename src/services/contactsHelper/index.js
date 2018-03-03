@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 let addContact = (contacts, newContact) => {
-  return [...contacts, newContact]
+  return [newContact, ...contacts]
 }
 
 let checkContact = (contacts, index) => {
