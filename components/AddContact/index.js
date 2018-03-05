@@ -19,17 +19,9 @@ class AddContact extends Component {
 
   submit(event) {
     event.preventDefault()
-    let newContact = this.parseContact(this.state.value)
+    let newContact = parseContact(this.state.value)
     this.props.onclick(newContact)
     this.setState({value: ''})
-  }
-
-  parseContact(contactString) {
-    let hashRegExp = /#\w*/g
-    let stripHashSign = string => string.replace('#', '')
-    let tags = (contactString.match(hashRegExp) || []).map(stripHashSign)
-    let contactName = contactString.replace(hashRegExp, '').trim()
-    return { name: contactName, tags }
   }
 
   render() {
@@ -44,6 +36,14 @@ class AddContact extends Component {
       </form>
     )
   }
+}
+
+function parseContact(contactString) {
+  let hashRegExp = /#\w*/g
+  let stripHashSign = string => string.replace('#', '')
+  let tags = (contactString.match(hashRegExp) || []).map(stripHashSign)
+  let contactName = contactString.replace(hashRegExp, '').trim()
+  return { name: contactName, tags }
 }
 
 export default AddContact

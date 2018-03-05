@@ -12,7 +12,7 @@ import DeleteIcon from 'material-ui-icons/Delete'
 
 import LastConnected from '../LastConnected'
 
-function Contact(props) {
+export default props => {
   return (
     <ListItem>
       <ListItemText primary={props.contact.name} />
@@ -48,5 +48,3 @@ function renderTags(tags) {
     return tags.map((tag, index) => <Chip key={index} label={`#${tag}`} />)
   }
 }
-
-export default Contact

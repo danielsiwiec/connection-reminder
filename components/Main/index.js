@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import Grid from 'material-ui/Grid'
 import ContactList from '../ContactList'
 import AddContact from '../AddContact'
 import backendClient from '../../services/backendClient'
 import googleLogin from '../../services/googleLogin'
 import contactsHelper from '../../services/contactsHelper'
-import styles from './styles.scss'
 
-class App extends Component {
+class Main extends Component {
 
   constructor() {
     super()
@@ -33,7 +32,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className='container'>
         <Grid container justify='center'>
           <script src="https://smartlock.google.com/client"></script>
             <Grid item xs={12}>
@@ -48,6 +47,11 @@ class App extends Component {
                 bump={this.bumpContact} />
             </Grid>
         </Grid>
+        <style jsx>{`
+          .container {
+            margin-top: 20px;
+          }
+        `}</style>
       </div>
     )
   }
@@ -73,4 +77,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Main
