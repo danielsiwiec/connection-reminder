@@ -40,7 +40,7 @@ class Main extends Component {
                 <AddContact contacts={this.state.contacts} onclick={this.addContact}/>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item md={6} xs={12}>
               <ContactList contacts={this.state.contacts}
                 check={this.checkContact} 
                 remove={this.removeContact}
